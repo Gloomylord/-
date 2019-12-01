@@ -1,31 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-        <head>
-            <title>Список</title>
-            <link href="1.css" rel="stylesheet" type="text/css"/>
-        </head>
-    
+    <head>
+        <title>Список</title>
+        <link href="1.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    </head>
 <body>
-        <script>
-            let i=0;
-            let j=0;
-            let string="id";
-    function click1(){
-    let elem = document.getElementById('Input1');
-    if(i==0){
-    document.getElementById('div').style.display = 'flex';    
-    }    
-     if(elem.value){  
-     document.getElementById('div').innerHTML = `${document.getElementById('div').innerHTML}`+ `<div id="${string+j}" class="red">${elem.value} <button id="n${j}" onclick="del(this)" class="bot">&#9746;</div>`; 
-     j+=1;
-     }
-    i=1;
-    }
-    function del(obj){
-        let m = obj.id.slice(1);
-    document.getElementById(`id${m}`).innerHTML='';  
-    }
-    </script>
+
     <form action="/text" class="mr"> 
         <label for="Input1">Введите список: </label><br>
         <input class="wi" id="Input1">
@@ -33,9 +14,55 @@
     </form>
     <div id="div" class="div1">
     </div>
+        <script>
+        let i=0;
+            i=+localStorage.getItem('i');
+        let j=0;
+        if(localStorage.getItem('j')){
+            j=+localStorage.getItem('j');
+            for(let s=0; s < j; s=s+1){
+                if(localStorage.getItem(`id${s}`)){
+                    document.getElementById('div').innerHTML = `${document.getElementById('div').innerHTML}`+ `<div id="id${s}" class="red">${localStorage.getItem(`id${s}`)} 
+<i id="n${s}" onclick="del(this)" class="bot fa fa-times-circle" aria-hidden="true"></i></div>`;
+            }
+            }
+            }
+            if(!(i==0)){
+                document.getElementById('div').style.display = 'flex';    
+            }
 
-
+        function click1(){
+            let elem = document.getElementById('Input1');
+            if(elem.value){
+                document.getElementById('div').innerHTML = `${document.getElementById('div').innerHTML}`+ `<div id="id${j}" class="red">${elem.value} <i id="n${j}" onclick="del(this)" class="bot fa fa-times-circle" aria-hidden="true"></i></div>`;
+                localStorage.setItem(`id${j}`, elem.value );
+                j=+j+1;
+                localStorage.setItem('j', j );
+                i+=1;
+                localStorage.setItem('i', i );
+             }
+            if(i==0){
+                document.getElementById('div').style.display = 'none';    
+            }
+            else{
+                document.getElementById('div').style.display = 'flex';
+            }
+            
+        }
+        
+        function del(obj){
+            let m = obj.id.slice(1);
+            document.getElementById(`id${m}`).innerHTML='';
+            document.getElementById(`id${m}`).style.display='none';
+            localStorage.removeItem(`id${m}`);
+            i-=1;
+            localStorage.setItem('i', i );
+            if(i==0){
+                document.getElementById('div').style.display = 'none';
+                document.getElementById('div').innerHTML = '';
+                localStorage.setItem('j',0);        
+            }
+        }
+    </script>
 </body>
-
-    
 </html>
